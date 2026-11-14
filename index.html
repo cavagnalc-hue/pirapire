@@ -1,4 +1,116 @@
 <!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://tqaqjranxjuejbrytfjk.supabase.co https://dolarapi.com https://open.er-api.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pirapire Pro</title><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><meta name="theme-color" content="#0f8b7a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Pirapire Pro">
+<style>
+:root{--bg:#f1f6f4;--card:#fff;--tx:#12302b;--mut:#5f7a74;--pri:#0f8b7a;--ing:#16a34a;--gas:#e8590c;--warn:#f59f00;--bd:#dce8e4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1b19;--card:#152926;--card:#152926;--tx:#e6f3ef;--mut:#8fb0a8;--pri:#2dd4bf;--ing:#4ade80;--gas:#fb923c;--bd:#244039}}
+:root[data-theme="dark"]{--bg:#0d1b19;--card:#152926;--tx:#e6f3ef;--mut:#8fb0a8;--pri:#2dd4bf;--ing:#4ade80;--gas:#fb923c;--bd:#244039}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding-bottom:76px}
+header{background:linear-gradient(135deg,#0f8b7a,#0b5d8a);color:#fff;padding:16px 16px 14px}
+h1{margin:0;font-size:20px}header small{opacity:.85}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.seg{display:inline-flex;background:rgba(255,255,255,.2);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;color:#fff;padding:6px 11px;border-radius:8px;font-weight:600;font-size:13px}
+.seg button.on{background:#fff;color:var(--fc,#0b5d8a)}
+main{padding:12px;max-width:760px;margin:auto}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:12px}
+.card h2{margin:0 0 10px;font-size:15px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.k{border-radius:14px;padding:12px;color:#fff}.k b{display:block;font-size:19px;margin-top:2px}.k span{font-size:12px;opacity:.9}
+.k1{background:linear-gradient(135deg,#16a34a,#0f8b7a)}.k2{background:linear-gradient(135deg,#e8590c,#d9480f)}.k3{background:linear-gradient(135deg,#0b5d8a,#364fc7)}.k4{background:linear-gradient(135deg,#7048e8,#9c36b5)}
+.bars{display:flex;align-items:flex-end;gap:8px;height:130px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.pair{display:flex;gap:3px;align-items:flex-end;width:100%;height:100px}
+.pair i{flex:1;border-radius:5px 5px 0 0;min-height:2px}
+.bc small{font-size:11px;color:var(--mut)}
+.hb{margin:8px 0}.hb div.l{display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px}
+.tr{height:10px;background:var(--bd);border-radius:6px;overflow:hidden}.tr i{display:block;height:100%;border-radius:6px}
+.al{padding:10px 12px;border-radius:12px;margin:6px 0;font-size:13px;border-left:5px solid var(--warn);background:rgba(245,159,0,.12)}
+.al.r{border-color:#e03131;background:rgba(224,49,49,.1)}.al.g{border-color:var(--ing);background:rgba(22,163,74,.1)}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;border:0;background:none;color:var(--mut);font-size:11px;padding:6px 2px}nav button b{display:block;font-size:20px}nav button.on{color:var(--pri);font-weight:700}
+label{display:block;font-size:12px;color:var(--mut);margin:10px 0 4px}
+input,select{width:100%;padding:11px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:15px}
+.btn{width:100%;margin-top:14px;padding:13px;border:0;border-radius:12px;background:var(--pri);color:#fff;font-weight:700;font-size:16px}
+.tog{display:flex;gap:8px}.tog button{flex:1;padding:11px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);font-weight:700}
+.tog button.on.i{border-color:var(--ing);color:var(--ing)}.tog button.on.g{border-color:var(--gas);color:var(--gas)}
+.mv{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.mv img,.mv .ph{width:42px;height:42px;border-radius:8px;object-fit:cover;background:var(--bd);display:flex;align-items:center;justify-content:center;flex:none}
+.mv .a{margin-left:auto;font-weight:700;white-space:nowrap}.pos{color:var(--ing)}.neg{color:var(--gas)}
+.note{font-size:12px;color:var(--mut)}:root[data-theme="light"]{--tx:#000;--mut:#2c3d38;--bd:#a9bdb7}:root[data-theme="dark"]{--tx:#fff;--mut:#c4dcd5}main,header{filter:brightness(var(--br,1))}nav{overflow-x:auto}nav button{flex:0 0 auto;min-width:68px;color:var(--tx);opacity:.7}nav button.on{opacity:1;color:var(--pri)}.tog button{color:var(--tx)}a.chip{text-decoration:none;display:inline-block}.rt{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px}textarea{width:100%;padding:11px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:15px;min-height:80px}.chip{display:inline-block;margin:4px 4px 0 0;padding:7px 10px;border-radius:20px;border:1px solid var(--pri);color:var(--pri);background:none;font-size:12px}
+.pill{font-size:11px;padding:2px 8px;border-radius:20px;background:var(--bd);color:var(--mut)}
+nav button{flex:1 1 0;min-width:0;font-size:10px;padding:6px 0}nav button b{font-size:19px}.st{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)}.st>i{flex:none;width:26px;height:26px;border-radius:50%;background:var(--pri);color:#fff;font-style:normal;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:13px}.st p{margin:2px 0 6px;font-size:13px}
+</style></head><body><div id="sb" style="display:none;background:#e03131;color:#fff;padding:8px 12px;font-size:13px"></div><div id="lg" style="position:fixed;inset:0;z-index:99;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:380px"><h2 style="font-size:20px">Pirapire Pro</h2><div id="lc"><p class="note">Cargando…</p></div></div></div>
+<header>
+<div class="row" style="justify-content:space-between"><div><h1>🎣 Pirapire Pro</h1><small id="sub">Gestión de posadas de pesca</small></div>
+<div class="seg" id="cur"></div></div>
+<div class="row" style="margin-top:10px"><span style="font-size:12px;opacity:.85">Ingresar como:</span>
+<div class="seg" id="role"></div></div><div class="row" id="tm" style="margin-top:8px"></div>
+</header>
+<main id="m"></main>
+<nav id="nav"></nav><div id="ch"></div>
+<script>if(!window.claude)window.claude={use:async()=>null};
+const $=s=>document.querySelector(s);
+const SANM={'<':'‹','>':'›','"':'”',"'":'’','`':'´','\\':'/','&':'＆'};
+function san(v,k){if(typeof v==='string'){if(k==='thumb')return /^data:image\/jpeg;base64,[A-Za-z0-9+\/=]*$/.test(v)?v:'';return v.replace(/[<>"'`\\&]/g,c=>SANM[c])}if(Array.isArray(v))return v.map(x=>san(x));if(v&&typeof v==='object'){const o={};for(const q of Object.keys(v))if(q!=='__proto__'&&q!=='constructor'&&q!=='prototype')o[san(q)]=san(v[q],q);return o}return v}
+const RATES={ARS:{r:1,s:'$',n:'Pesos'},BRL:{r:1/301,s:'R$',n:'Reales'},PYG:{r:3.93,s:'₲',n:'Guaraníes'},USD:{r:1/1600,s:'US$',n:'Dólares'}};
+const CATS=['Carnada','Comida','Bebidas','Combustible','Leña y gas','Blanquería','Sueldos','Mantenimiento','Otros','Impuestos','Tasas municipales','Contribuciones','Internet y teléfono','Electricidad','Seguros','Alquiler / canon','Desayunos','Almuerzos','Cenas','Meriendas','Comida en isla o playa','Shows contratados','Extras','Sueldos guías','Sueldos encargado','Sueldos gastronomía','Cargas sociales','Reposición de equipos','Costo de tienda'];
+const FIJ=['Sueldos','Mantenimiento','Impuestos','Tasas municipales','Contribuciones','Internet y teléfono','Electricidad','Seguros','Alquiler / canon','Sueldos guías','Sueldos encargado','Sueldos gastronomía','Cargas sociales'];
+const COL=['#0f8b7a','#e8590c','#7048e8','#0b5d8a','#f59f00','#d6336c','#364fc7','#2f9e44','#868e96','#1098ad','#e67700','#5c940d','#a61e4d','#495057','#862e9c','#c92a2a'];
+const GR=['Grupo Brasil (Porto Alegre)','Pescadores Rosario','Familia Asunción','Sin grupo'];
+const day=n=>{const d=new Date();d.setDate(d.getDate()-n);return d.toISOString().slice(0,10)};
+function seed(){let id=1,e=[];const A=(n,t,c,d,a,g,p)=>e.push({id:id++,date:day(n),type:t,cat:c,desc:d,amt:a,grp:g,photo:p?1:0});
+A(0,'ing','Paquete','Paquete 3 días, 6 pescadores',1450000,GR[0],1);A(0,'gas','Carnada','Mojarras y tarariras',38000,GR[0],1);A(0,'gas','Combustible','Nafta lanchas',92000,GR[0],0);
+A(1,'ing','Paquete','Paquete 2 días, 4 pescadores',820000,GR[1],1);A(1,'gas','Comida','Carne y verduras',145000,GR[1],1);A(1,'gas','Leña y gas','Leña',26000,'Sin grupo',1);
+A(2,'ing','Extras','Bebidas y extras',210000,GR[0],1);A(2,'gas','Bebidas','Reposición cerveza',160000,'Sin grupo',1);A(2,'gas','Sueldos','Guía y cocinera',380000,'Sin grupo',1);
+A(3,'ing','Paquete','Paquete 4 días, 5 pescadores',1780000,GR[2],1);A(3,'gas','Comida','Desayunos y cenas',210000,GR[2],1);A(3,'gas','Combustible','Nafta y aceite',150000,GR[2],0);
+A(4,'gas','Mantenimiento','Service motor 40 HP',185000,'Sin grupo',1);A(5,'ing','Paquete','Paquete 2 días, 3 pescadores',560000,GR[1],1);A(5,'gas','Blanquería','Lavandería',48000,'Sin grupo',1);A(6,'gas','Comida','Compras mayorista',230000,'Sin grupo',1);
+return e}
+let S;try{S=JSON.parse(localStorage.getItem('pp1'))}catch(x){}
+S=S||{cur:'ARS',role:'Dueño',tab:'res',per:'sem',fijos:2400000,e:seed(),f:{type:'gas'}};
+S.fin=S.fin||{caja:3500000,stock:900000,deuda:1800000,inv:45000000,tasa:30,occ:100,anios:5};
+S.th=S.th||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');S.br=S.br||1;S.cab=S.cab||6;S.nv=S.nv||'ok';S.ln=S.ln==null?0:S.ln;
+S.est=S.est||[{g:GR[0],o:'Porto Alegre',pax:6,cab:2,a:day(2),b:day(-1)},{g:GR[1],o:'Rosario',pax:4,cab:1,a:day(5),b:day(3)},{g:GR[2],o:'Asunción',pax:5,cab:2,a:day(-6),b:day(-9)},{g:'Grupo Río Cuarto',o:'Río Cuarto',pax:8,cab:3,a:day(-20),b:day(-24)}];
+S.sv=S.sv||[{n:'Tasa municipal',cat:'Municipal',m:85000,d:10},{n:'Ingresos Brutos',cat:'Provincial',m:180000,d:15},{n:'Electricidad',cat:'Luz',m:240000,d:12},{n:'Gas envasado',cat:'Gas',m:60000,d:20},{n:'Internet y teléfono',cat:'Internet',m:55000,d:5},{n:'Seguro de lanchas',cat:'Seguro',m:120000,d:25}];
+S.eq=S.eq||[{n:'Cañas surubí',q:12,min:10,c:85000,l:1},{n:'Reeles',q:10,min:8,c:140000,l:0},{n:'Líneas y señuelos',q:60,min:40,c:6000,l:4},{n:'Chalecos salvavidas',q:14,min:12,c:35000,l:0},{n:'Motores fuera de borda',q:3,min:3,c:4500000,l:0}];
+if(!S.v2){S.v2=1;[[370,'ing','Paquete','Temporada 2025',9800000,GR[0]],[370,'gas','Comida','Compras 2025',2600000,GR[0]],[390,'ing','Paquete','Temporada 2025',6400000,GR[1]],[390,'gas','Combustible','Nafta 2025',1500000,GR[1]],[380,'ing','Paquete','Temporada 2025',5200000,GR[2]],[380,'gas','Sueldos','Sueldos 2025',2100000,'Sin grupo']].forEach((x,i)=>S.e.push({id:9000+i,date:day(x[0]),type:x[1],cat:x[2],desc:x[3],amt:x[4],grp:x[5],photo:1}))}
+S.caja=S.caja||{ARS:3500000,BRL:0,PYG:0};S.deu=S.deu||[{n:'Mayorista de carnes',m:420000,v:day(-6),p:0},{n:'Combustible (cuenta corriente)',m:310000,v:day(-12),p:0}];
+const PR=[1450000,820000,1780000,3900000],PG=[1450000,820000,500000,0];S.est.forEach((s,i)=>{if(s.precio==null){s.precio=PR[i]||0;s.pag=PG[i]||0;s.est=i<2?'Finalizada':'Confirmada'}});
+S.mt=S.mt||[{n:'Corte de césped y poda',cat:'Parque y patio',ext:1,modo:'mes',m:25000,v:4},{n:'Mantenimiento de pileta',cat:'Pileta',ext:1,modo:'mes',m:20000,v:4},{n:'Líquidos y cloro de pileta',cat:'Pileta',ext:0,modo:'mes',m:60000,v:1},{n:'Limpieza de cabañas y baños',cat:'Servicio doméstico',ext:1,modo:'grupo',m:35000,v:1},{n:'Limpieza diaria de espacios comunes',cat:'Servicio doméstico',ext:1,modo:'dia',m:6000,v:1}];S.td=S.td||[{n:'Gorra de pesca',q:20,min:8,c:6000,p:12000},{n:'Remera térmica UV',q:15,min:6,c:11000,p:22000},{n:'Vaso térmico',q:25,min:10,c:5000,p:11000},{n:'Camisa manga larga',q:10,min:4,c:14000,p:28000}];S.vt=S.vt||[];S.arch=S.arch||[];S.dm=S.dm||[];S.ch=S.ch||[];S.fl=S.fl||[{n:'Motor 40 HP #1',t:'Motor',h:182,u:100,int:100,v:4500000,vd:2000},{n:'Motor 40 HP #2',t:'Motor',h:95,u:0,int:100,v:4500000,vd:2000},{n:'Motor 15 HP (auxiliar)',t:'Motor',h:240,u:100,int:100,v:1800000,vd:1500},{n:'Lancha Dorado 1',t:'Lancha',h:410,u:300,int:200,v:6500000,vd:5000}];
+if(!S.v3){S.v3=1;const M={Carnada:'Pescadería del puerto',Comida:'Mayorista de carnes',Combustible:'Estación YPF',Bebidas:'Distribuidora de bebidas'};S.e.forEach(e=>{if(!e.pv&&M[e.cat])e.pv=M[e.cat]});S.eq.push({n:'Carnada viva (kg)',q:8,min:15,c:3500,l:0},{n:'Cerveza (cajones)',q:6,min:10,c:42000,l:0},{n:'Carne (kg)',q:20,min:30,c:9000,l:0})}
+if(S.fx){RATES.BRL.r=1/S.fx.b;RATES.PYG.r=S.fx.p;if(S.fx.u)RATES.USD.r=1/S.fx.u}
+S.est.forEach(s=>GR.includes(s.g)||GR.splice(GR.length-1,0,s.g));
+const MN=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const FL={ARS:['#4a9fd8','#ffffff','#4a9fd8'],BRL:['#0a8f3c','#ffdf00','#1d3f9e'],PYG:['#d52b1e','#ffffff','#0038a8'],USD:['#3c3b6e','#ffffff','#b22234']};
+const save=()=>{try{localStorage.setItem('pp1',JSON.stringify(S))}catch(x){}push();syncE()};
+const money=v=>{const c=RATES[S.cur];const x=v*c.r;return c.s+' '+Math.round(x).toLocaleString('es-AR')};
+const short=v=>{const x=v*RATES[S.cur].r;return RATES[S.cur].s+(Math.abs(x)>=1e6?(x/1e6).toFixed(1)+'M':Math.round(x/1e3)+'k')};
+const inP=e=>{const t=day(0);return S.per==='hoy'?e.date===t:S.per==='sem'?e.date>=day(6):S.per==='mes'?e.date.slice(0,7)===t.slice(0,7):e.date.slice(0,4)===t.slice(0,4)};
+const sum=(a,t)=>a.filter(e=>e.type===t).reduce((s,e)=>s+e.amt,0);
+function head(){const F=FL[S.cur];const rt=document.documentElement;rt.dataset.theme=S.th;rt.style.setProperty('--br',S.br);rt.style.setProperty('--fc',F[0]);const hd=$('header');$('#sub').textContent='Gestión de posadas de pesca · '+(S.L?'Licencia: '+S.L.n:'versión de prueba');hd.style.background=F[0];hd.style.boxShadow=`0 5px 0 ${F[1]},0 10px 0 ${F[2]}`;$('#tm').innerHTML=`<div class="seg"><button class="${S.th==='light'?'on':''}" onclick="S.th='light';R()">☀️ Sol</button><button class="${S.th==='dark'?'on':''}" onclick="S.th='dark';R()">🌙 Noche</button></div><span>🔆</span><input type="range" min=".6" max="1.3" step=".05" value="${S.br}" style="width:110px" oninput="S.br=+this.value;document.documentElement.style.setProperty('--br',S.br);save()">`;
+$('#cur').innerHTML=Object.keys(RATES).map(k=>`<button class="${S.cur===k?'on':''}" onclick="S.cur='${k}';R()">${k}</button>`).join('');
+$('#role').innerHTML=(S.real&&S.real!=='dueno'?['Encargado']:['Dueño','Encargado']).map(k=>`<button class="${S.role===k?'on':''}" onclick="swr('${k}')">${k}</button>`).join('');
+const t=S.role==='Dueño'?[['res','📊','Resumen'],['gru','👥','Grupos'],['equ','⚖️','Equilibrio'],['cmp','📈','Comparar'],['fin','💹','Finanzas'],['ia','🤖','IA'],['cob','💰','Cobros'],['pro','🚚','Proveedores'],['clt','🤝','Clientes'],['cal','📅','Calendario'],['fij','🧾','Fijos'],['flo','🚤','Flota'],['eq','🎣','Equipos'],['cli','🌦️','Clima'],['car','📷','Cargar']]:[['cal','📅','Calendario'],['car','📷','Cargar'],['flo','🚤','Flota'],['eq','🎣','Equipos'],['cli','🌦️','Clima']];
+nav2();({}).innerHTML=t.map(x=>`<button class="${S.tab===x[0]?'on':''}" onclick="S.tab='${x[0]}';R()"><b>${x[1]}</b>${x[2]}</button>`).join('')}
+function per(){return `<div class="seg" style="background:var(--bd);margin-bottom:10px">${[['hoy','Hoy'],['sem','7 días'],['mes','Mes'],['anio','Año']].map(p=>`<button style="color:${S.per===p[0]?'#0b5d8a':'var(--mut)'}" class="${S.per===p[0]?'on':''}" onclick="S.per='${p[0]}';R()">${p[1]}</button>`).join('')}</div>`}
+function groups(a){return GR.slice(0,-1).map(g=>{const x=a.filter(e=>e.grp===g);const i=sum(x,'ing'),c=sum(x,'gas');return{g,i,c,m:i?(i-c)/i:0}})}
+function res(){const a=S.e.filter(inP),i=sum(a,'ing'),c=sum(a,'gas')+prv(),r=i-c,mg=i?r/i*100:0;
+let h=per()+`<div class="kpis"><div class="k k1"><span>Ingresos</span><b>${money(i)}</b></div><div class="k k2"><span>Gastos</span><b>${money(c)}</b></div><div class="k k3"><span>Resultado</span><b>${money(r)}</b></div><div class="k k4"><span>Margen</span><b>${mg.toFixed(0)}%</b></div></div>`;
+h+=`<div class="row" style="margin:12px 0"><button class="btn" style="margin:0;flex:1;background:var(--ing)" onclick="S.f.type='ing';go('car')">＋ Ingreso</button><button class="btn" style="margin:0;flex:1;background:var(--gas)" onclick="S.f.type='gas';go('car')">－ Gasto</button></div>`+'@AL@'+panel()+'<details style="margin-bottom:12px"><summary class="chip" style="display:inline-block">Ver estado de resultados</summary>'+er(a)+'</details>';let ds=[];for(let n=6;n>=0;n--){const x=S.e.filter(e=>e.date===day(n));ds.push({l:day(n).slice(8),i:sum(x,'ing'),c:sum(x,'gas')})}
+const mx=Math.max(...ds.flatMap(d=>[d.i,d.c]),1);
+h+=`<div class="card" style="margin-top:12px"><h2>Últimos 7 días <span class="pill" style="background:var(--ing);color:#fff">ingreso</span> <span class="pill" style="background:var(--gas);color:#fff">gasto</span></h2><div class="bars">${ds.map(d=>`<div class="bc"><div class="pair"><i style="height:${d.i/mx*100}%;background:var(--ing)"></i><i style="height:${d.c/mx*100}%;background:var(--gas)"></i></div><small>${d.l}</small></div>`).join('')}</div></div>`;
+const cs=CATS.map((k,j)=>({k,v:a.filter(e=>e.type==='gas'&&e.cat===k).reduce((s,e)=>s+e.amt,0),c:COL[j%COL.length]})).concat(MC.map((k,j)=>({k:k==='Otros'?'Otros (mantenimiento)':k,v:MTp(...rg(),k),c:COL[(j+9)%COL.length]}))).filter(x=>x.v).sort((p,q)=>q.v-p.v);
+h+=`<div class="card"><h2>¿En qué se va la plata?</h2>${cs.map(x=>`<div class="hb"><div class="l"><span>${x.k}</span><b>${money(x.v)} · ${(x.v/c*100).toFixed(0)}%</b></div><div class="tr"><i style="width:${x.v/c*100}%;background:${x.c}"></i></div></div>`).join('')||'<p class="note">Sin gastos en el período.</p>'}</div>`;
+let al=[];groups(S.e.filter(inP)).forEach(x=>{if(x.i&&x.m<.3)al.push(['r',`⚠️ ${x.g}: margen de solo ${(x.m*100).toFixed(0)}%. Revisá precio o costos del grupo.`])});
+if(cs[0]&&cs[0].v/c>.35)al.push(['',`🔔 ${cs[0].k} concentra el ${(cs[0].v/c*100).toFixed(0)}% de tus gastos.`]);
+const sf=S.e.filter(e=>!e.photo).length;if(sf)al.push(['',`📎 ${sf} movimientos sin foto del comprobante.`]);
+S.fl.forEach(x=>{const k=x.h-x.u;if(x.int&&k>=x.int)al.push(['r','🔧 Service vencido: '+x.n+' ('+Math.round(k)+' h desde el último)']);else if(x.int&&k>=x.int*.85)al.push(['','🔧 Service próximo: '+x.n+' (faltan '+Math.round(x.int-k)+' h)'])});S.sv.forEach(x=>{const dd=(x.d-new Date().getDate()+31)%31;if(dd<=3)al.push(['',`⏰ Vence ${x.n} (día ${x.d}): ${money(x.m)}`])});if(r<0)al.push(['r','🚨 El resultado del período es negativo.']);
+(S.td||[]).filter(x=>x.q<x.min).forEach(x=>al.push(['','🛍️ Tienda: reponer '+x.n+' (quedan '+x.q+', mínimo '+x.min+')']));if(!al.length)al.push(['g','✅ Todo en orden en este período.']);
+h=h.replace('@AL@',`<div class="card"><h2>Alertas</h2>${al.map(x=>`<div class="al ${x[0]}">${x[1]}</div>`).join('')}</div>`);
+h+=cmon(i,c);h+=`<div class="card"><h2>🔔 Cierre del día por grupo</h2>${GR.slice(0,-1).map(g=>{const x=S.e.filter(e=>e.grp===g&&e.date===day(0));if(!x.length)return '';const i=sum(x,'ing'),c=sum(x,'gas');return `<div class="rt"><span>${g}</span><b class="${i-c>=0?'pos':'neg'}">${money(i-c)}</b></div>`}).join('')||'<p class="note">Sin movimientos hoy.</p>'}<button class="btn" style="padding:9px" onclick="GR.slice(0,-1).forEach(g=>S.e.some(e=>e.grp=
+<!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Pirapire Pro</title><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><meta name="theme-color" content="#0f8b7a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Pirapire Pro">
