@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://tqaqjranxjuejbrytfjk.supabase.co; object-src 'none'; base-uri 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pirapire Pro</title><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><meta name="theme-color" content="#0f8b7a">
+<style>
+:root{--bg:#f1f6f4;--card:#fff;--tx:#12302b;--mut:#5f7a74;--pri:#0f8b7a;--ing:#16a34a;--gas:#e8590c;--bd:#cfe0db}
+@media(prefers-color-scheme:dark){:root{--bg:#0d1b19;--card:#152926;--tx:#e6f3ef;--mut:#9fc0b8;--pri:#2dd4bf;--ing:#4ade80;--gas:#fb923c;--bd:#2c4a43}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+header{background:#0f8b7a;color:#fff;padding:14px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+main{max-width:640px;margin:auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+h1,h2{margin:0 0 10px}h1{font-size:22px}h2{font-size:15px}
+label{display:block;font-size:12px;color:var(--mut);margin:10px 0 4px}
+input,select{width:100%;padding:11px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:16px}
+.btn{width:100%;margin-top:14px;padding:13px;border:0;border-radius:12px;background:var(--pri);color:#fff;font-weight:700;font-size:16px}
+.btn.g{background:var(--mut)}.btn:disabled{opacity:.6}
+.s{border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:6px 10px;border-radius:8px;font-size:13px;font-weight:600;margin:2px}
+.s.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+header .s{background:rgba(255,255,255,.2);color:#fff;border-color:transparent}header .s.on{background:#fff;color:#0b5d8a}
+.k{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.k div{border-radius:12px;padding:10px;color:#fff;font-size:12px}.k b{display:block;font-size:15px;margin-top:2px}
+.rt{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.n{font-size:12px;color:var(--mut)}.pos{color:var(--ing)}.neg{color:var(--gas)}
+.tr{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin:3px 0 8px}.tr i{display:block;height:100%;background:var(--gas)}
+.tog{display:flex;gap:8px}.tog button{flex:1;padding:11px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);font-weight:700}
+.tog .on.i{border-color:var(--ing);color:var(--ing)}.tog .on.g{border-color:var(--gas);color:var(--gas)}
+</style></head><body>
+<div id="app"><main><p class="n">Cargando…</p></main></div>
+<script>
+const SU='https://tqaqjranxjuejbrytfjk.supabase.co',SK='sb_publishable_cYDmhNYn0TLDIBE89D1I1A_lY1fq224';
+const $=s=>document.querySelector(s),A=$('#app');
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const RT={ARS:{r:1,s:'$'},BRL:{r:1/301,s:'R$'},PYG:{r:3.93,s:'₲'},USD:{r:1/1600,s:'US$'}};
+const CI=['Paquete','Extras','Tienda','Otros'],CG=['Carnada','Comida','Bebidas','Combustible','Leña y gas','Blanquería','Sueldos','Mantenimiento','Impuestos','Servicios','Otros'];
+let S={cur:'ARS',per:'mes',type:'gas',e:[],tid:null,name:''};
+const day=n=>{const d=new Date();d.setDate(d.getDate()-n);return d.toISOString().slice(0,10)};
+const ses=()=>{try{return JSON.parse(localStorage.getItem('pps'))}catch(x){return null}};
+const money=v=>{const c=RT[S.cur];return c.s+' '+Math.round(v*c.r).toLocaleString('es-AR')};
+const inP=e=>{const t=day(0);return S.per==='hoy'?e.date===t:S.per==='sem'?e.date>=day(6):S.per==='mes'?e.date.slice(0,7)===t.slice(0,7):e.date.slice(0,4)===t.slice(0,4)};
+const sum=(a,t)=>a.filter(e=>e.type===t).reduce((s,e)=>s+(+e.amt||0),0);
+async function f(url,o){const c=new AbortController(),t=setTimeout(()=>c.abort(),15000);try{return await fetch(url,Object.assign({},o,{signal:c.signal}))}finally{clearTimeout(t)}}
+async function tok(){let s=ses();if(!s)return null;if(s.expires_at*1000>Date.now()+60000)return s;const r=await f(SU+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:SK,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:s.refresh_token})});if(!r.ok){localStorage.removeItem('pps');return null}s=await r.json();localStorage.setItem('pps',JSON.stringify(s));return s}
+async function api(p,o){o=o||{};const s=await tok();if(!s)throw new Error('auth');const r=await f(SU+'/rest/v1/'+p,{method:o.m||'GET',headers:{apikey:SK,Authorization:'Bearer '+s.access_token,'Content-Type':'application/json',Prefer:'return=minimal'},body:o.b?JSON.stringify(o.b):undefined});if(!r.ok){let t='';try{t=(await r.json()).message}catch(x){}throw new Error(t||('Error '+r.status))}const x=await r.text();return x?JSON.parse(x):null}
+function login(m){A.innerHTML='<main><div class="card"><h1>🎣 Pirapire Pro</h1><label>Email</label><input id="le" type="email" autocomplete="username"><label>Contraseña</label><input id="lp" type="password" autocomplete="current-password"><button class="btn" id="lb">Entrar</button><p class="n" id="lm">'+esc(m||'')+'</p></div></main>';$('#lb').onclick=doLogin;$('#lp').onkeydown=e=>{if(e.key==='Enter')doLogin()}}
+async function doLogin(){const m=$('#lm');m.textContent='Entrando…';try{const r=await f(SU+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:SK,'Content-Type':'application/json'},body:JSON.stringify({email:$('#le').value.trim(),password:$('#lp').value})}),j=await r.json();if(!r.ok){m.textContent='Error '+r.status+': '+(j.msg||j.error_description||j.message||j.error||'sin detalle');return}localStorage.setItem('pps',JSON.stringify(j));boot()}catch(x){m.textContent='Error: '+x.message}}
+function out(){localStorage.removeItem('pps');location.reload()}
+async function boot(){A.innerHTML='<main><p class="n">Cargando…</p></main>';const s=ses();if(!s){login();return}
+try{const m=await api('members?select=tenant_id&user_id=eq.'+s.user.id+'&limit=1');if(!m.length){login('Tu usuario no está asignado a ninguna posada.');return}S.tid=m[0].tenant_id;
+const R=await Promise.all([api('tenants?select=name&id=eq.'+S.tid),api('cfg?select=data&tenant_id=eq.'+S.tid),api('movs?select=data&tenant_id=eq.'+S.tid+'&order=created_at.asc&limit=5000')]);
+S.name=(R[0][0]&&R[0][0].name)||'Posada';const fx=R[1][0]&&R[1][0].data&&R[1][0].data.fx;if(fx){if(fx.b)RT.BRL.r=1/fx.b;if(fx.p)RT.PYG.r=fx.p;if(fx.u)RT.USD.r=1/fx.u}
+S.e=R[2].map(r=>r.data).filter(Boolean);draw()}
+catch(x){if(x.message==='auth')login('Tu sesión venció. Entrá de nuevo.');else A.innerHTML='<main><div class="card"><p>No se pudo cargar: '+esc(x.message)+'</p><button class="btn" onclick="boot()">Reintentar</button><button class="btn g" onclick="out()">Cerrar sesión</button></div></main>'}}
+function draw(){const a=S.e.filter(inP),i=sum(a,'ing'),g=sum(a,'gas'),r=i-g;
+const cats=[...new Set(a.filter(e=>e.type==='gas').map(e=>e.cat))].map(k=>({k:k,v:a.filter(e=>e.type==='gas'&&e.cat===k).reduce((s,e)=>s+(+e.amt||0),0)})).sort((p,q)=>q.v-p.v);
+const gs=[...new Set(S.e.map(e=>e.grp).filter(Boolean))];
+const last=S.e.slice().sort((p,q)=>(q.date||'')<(p.date||'')?-1:1).slice(0,15);
+A.innerHTML='<header><b>🎣 '+esc(S.name)+'</b><span>'+Object.keys(RT).map(k=>'<button class="s '+(S.cur===k?'on':'')+'" onclick="S.cur=\''+k+'\';draw()">'+k+'</button>').join('')+'</span></header><main>'
++'<div>'+[['hoy','Hoy'],['sem','7 días'],['mes','Mes'],['anio','Año']].map(p=>'<button class="s '+(S.per===p[0]?'on':'')+'" onclick="S.per=\''+p[0]+'\';draw()">'+p[1]+'</button>').join('')+'</div>'
++'<div class="k" style="margin-top:10px"><div style="background:#16a34a">Ingresos<b>'+money(i)+'</b></div><div style="background:#e8590c">Gastos<b>'+money(g)+'</b></div><div style="background:#0b5d8a">Resultado<b>'+money(r)+'</b></div></div>'
++'<div class="card"><h2>¿En qué se va la plata?</h2>'+(cats.map(x=>'<div class="n">'+esc(x.k)+' · '+money(x.v)+' · '+(g?Math.round(x.v/g*100):0)+'%</div><div class="tr"><i style="width:'+(g?x.v/g*100:0)+'%"></i></div>').join('')||'<p class="n">Sin gastos en el período.</p>')+'</div>'
++'<div class="card"><h2>Nuevo movimiento</h2><div class="tog"><button class="i '+(S.type==='ing'?'on':'')+'" onclick="S.type=\'ing\';draw()">＋ Ingreso</button><button class="g '+(S.type==='gas'?'on':'')+'" onclick="S.type=\'gas\';draw()">－ Gasto</button></div>'
++'<label>Monto en '+S.cur+'</label><input id="am" type="number" inputmode="decimal"><label>Categoría</label><select id="ct">'+(S.type==='ing'?CI:CG).map(c=>'<option>'+c+'</option>').join('')+'</select>'
++'<label>Grupo</label><input id="gp" list="gl" placeholder="Sin grupo"><datalist id="gl">'+gs.map(x=>'<option value="'+esc(x)+'">').join('')+'</datalist><label>Detalle</label><input id="ds" placeholder="Ej: carnada, 10 kg de carne">'
++'<button class="btn" id="sv" onclick="add()">Guardar</button></div>'
++'<div class="card"><h2>Últimos movimientos</h2>'+(last.map(e=>'<div class="rt"><span><b>'+esc(e.desc)+'</b><br><span class="n">'+esc(e.date)+' · '+esc(e.cat)+' · '+esc(e.grp||'')+'</span></span><b class="'+(e.type==='ing'?'pos':'neg')+'">'+(e.type==='ing'?'+':'−')+money(+e.amt||0)+'</b></div>').join('')||'<p class="n">Todavía no hay movimientos.</p>')+'</div>'
++'<button class="btn g" onclick="out()">Cerrar sesión</button></main>'}
+async function add(){const v=+$('#am').value;if(!v){alert('Ingresá el monto');return}
+const e={id:Date.now(),date:day(0),type:S.type,cat:$('#ct').value,desc:$('#ds').value.trim()||$('#ct').value,amt:v/RT[S.cur].r,grp:$('#gp').value.trim()||'Sin grupo',photo:0};
+const b=$('#sv');b.disabled=true;b.textContent='Guardando…';
+try{await api('movs',{m:'POST',b:{tenant_id:S.tid,data:e}});S.e.push(e);draw()}catch(x){b.disabled=false;b.textContent='Guardar';alert('No se pudo guardar: '+x.message)}}
+window.addEventListener('error',e=>{if(/Cargando/.test(A.textContent))A.innerHTML='<main><div class="card"><p>Error al iniciar: '+esc(e.message)+'</p></div></main>'});
+try{if('serviceWorker' in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));if(window.caches)caches.keys().then(k=>k.forEach(n=>caches.delete(n)))}catch(x){}
+boot();
+</script></body></html>
