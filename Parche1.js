@@ -1,0 +1,37 @@
+function _e(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function _dv(d){const t=new Date();t.setHours(0,0,0,0);const y=t.getFullYear(),m=t.getMonth();let n=new Date(y,m,Math.min(d,new Date(y,m+1,0).getDate()));if(n<t)n=new Date(y,m+1,Math.min(d,new Date(y,m+2,0).getDate()));return Math.round((n-t)/864e5)}
+function sf(k,v){S.fin[k]=+v;clearTimeout(window._st);window._st=setTimeout(save,800);$('#fo').innerHTML=finOut()}
+function ask(){const o=$('#ao');if(o)o.textContent='El asistente con IA está en desarrollo y se activará en la versión con servidor.'}
+function head(){const F=FL[S.cur];const rt=document.documentElement;rt.dataset.theme=S.th;rt.style.setProperty('--br',S.br);rt.style.setProperty('--fc',F[0]);const hd=$('header');$('#sub').textContent='Gestión de posadas de pesca · '+(S.L?'Licencia: '+_e(S.L.n):'versión de prueba');hd.style.background=F[0];hd.style.boxShadow=`0 5px 0 ${F[1]},0 10px 0 ${F[2]}`;$('#tm').innerHTML=`<div class="seg"><button class="${S.th==='light'?'on':''}" onclick="S.th='light';R()">☀️ Sol</button><button class="${S.th==='dark'?'on':''}" onclick="S.th='dark';R()">🌙 Noche</button></div><span>🔆</span><input type="range" min=".6" max="1.3" step=".05" value="${S.br}" style="width:110px" oninput="S.br=+this.value;document.documentElement.style.setProperty('--br',S.br)" onchange="save()">`;
+$('#cur').innerHTML=Object.keys(RATES).map(k=>`<button class="${S.cur===k?'on':''}" onclick="S.cur='${k}';R()">${k}</button>`).join('');
+$('#role').innerHTML=(AU&&AU.pv?['Encargado','Dueño']:[S.role]).map(k=>`<button class="${S.role===k?'on':''}" onclick="pv('${k}')">${k}</button>`).join('');nav2()}
+function gru(){const a=S.e.filter(inP);let h=per();groups(a).forEach(x=>{const cl=x.m>=.4?'var(--ing)':x.m>=.3?'var(--warn)':'#e03131';const gi=GR.indexOf(x.g);
+h+=`<div class="card"><h2>${_e(x.g)}</h2><div class="row" style="justify-content:space-between;font-size:13px"><span>Ingreso <b class="pos">${money(x.i)}</b></span><span>Costo <b class="neg">${money(x.c)}</b></span></div><div class="hb"><div class="l"><span>Margen</span><b>${(x.m*100).toFixed(0)}%</b></div><div class="tr"><i style="width:${Math.max(0,x.m*100)}%;background:${cl}"></i></div></div><div class="note">Ganancia: ${money(x.i-x.c)}</div><button class="btn" style="padding:9px" onclick="aviso(GR[${gi}])">🔔 Cerrar estadía y avisar</button></div>`});
+return h+'<p class="note">Sirve para saber qué grupos conviene atraer y repetir (remarketing).</p>'}
+function equ(){const a=S.e.filter(e=>e.date>=day(29)),i=sum(a,'ing'),v=a.filter(e=>e.type==='gas'&&!FIJ.includes(e.cat)).reduce((s,e)=>s+e.amt,0);
+const cm=i?1-v/i:0,be=cm>0?FT()/cm:0,pct=be?Math.min(100,i/be*100):0;
+const ng=new Set(a.filter(e=>e.type==='ing'&&e.grp&&e.grp!=='Sin grupo').map(e=>e.grp)).size;const tk=ng?i/ng:0;
+const msg=cm<=0?'⚠️ Con los costos variables actuales no queda margen para cubrir los fijos. Revisá precios o costos.':i>=be?'✅ Ya superaste el punto de equilibrio.':'Te faltan <b>'+money(be-i)+'</b> para no perder este mes.';
+return pie()+`<div class="card"><h2>Punto de equilibrio mensual</h2><label>Otros costos fijos del mes en pesos (sueldos, mantenimiento). Impuestos y servicios se suman solos desde su sección.</label><input type="number" value="${S.fijos}" onchange="S.fijos=+this.value;R()">
+<div class="hb" style="margin-top:14px"><div class="l"><span>Vendiste</span><b>${money(i)} de ${money(be)}</b></div><div class="tr" style="height:16px"><i style="width:${pct}%;background:linear-gradient(90deg,var(--gas),var(--ing))"></i></div></div>
+<p>${msg}</p>
+<p class="note">Margen de contribución: ${(cm*100).toFixed(0)}% · Ingreso promedio por grupo: ${money(tk)} · Grupos necesarios para equilibrar: ${tk&&be?Math.ceil(be/tk):'-'}</p></div>`}
+function car(){const f=S.f;let h=`<div class="card"><h2>Nuevo comprobante</h2><div class="tog"><button class="i ${f.type==='ing'?'on':''}" onclick="S.f.type='ing';R()">＋ Ingreso</button><button class="g ${f.type==='gas'?'on':''}" onclick="S.f.type='gas';R()">－ Gasto</button></div>
+<label>Monto en ${RATES[S.cur].n}</label><input id="amt" type="number" inputmode="decimal" min="0" placeholder="0">
+<label>Fecha</label><input id="dt" type="date" value="${day(0)}" max="${day(0)}">
+<label>Categoría</label><select id="cat">${(f.type==='ing'?['Paquete','Extras','Alquiler de lancha','Guiada','Otros']:CATS.filter(c=>!SVC.includes(c))).map(c=>`<option>${_e(c)}</option>`).join('')}</select>
+<label>Grupo de pesca</label><select id="grp">${GR.map(c=>`<option>${_e(c)}</option>`).join('')}</select>
+<label>Detalle</label><input id="desc" maxlength="120" placeholder="Ej: carnada, 10 kg de carne"><label>Proveedor</label><input id="pvd" maxlength="80" list="pvl" placeholder="Ej: Carnicería López"><datalist id="pvl">${PV().map(p=>`<option>${_e(p)}</option>`).join('')}</datalist>
+<label>Foto del comprobante</label><button type="button" class="chip" style="font-size:15px;padding:10px 14px" onclick="$('#ph').click()">📷 Sacar foto ahora</button><input id="ph" type="file" accept="image/*" capture="environment" style="display:none" onchange="this.previousElementSibling.textContent='✅ Foto lista'">
+<button id="sv" class="btn" onclick="add()">Guardar</button></div>`;
+const l=S.e.slice().reverse().slice(0,12);
+h+=`<div class="card"><h2>Últimos movimientos</h2>${l.map(e=>`<div class="mv">${String(e.thumb||'').indexOf('data:image/')===0?`<img src="${_e(e.thumb)}">`:`<div class="ph">${e.photo?'🧾':'—'}</div>`}<div><b>${_e(e.desc)}</b><br><span class="note">${_e(String(e.date).slice(5))} · ${_e(e.cat)}</span></div>${S.role!=='Encargado'?`<div class="a ${e.type==='ing'?'pos':'neg'}">${e.type==='ing'?'+':'−'}${short(e.amt)}</div>`:''}</div>`).join('')}</div>`;return h}
+function add(){if(window._busy)return;const v=+$('#amt').value;if(!(v>0)){alert('Ingresá un monto mayor a cero');return}
+const dt=($('#dt')||{}).value||day(0);if(dt>day(0)){alert('La fecha no puede ser futura');return}
+window._busy=true;const b=$('#sv');if(b){b.disabled=true;b.textContent='Guardando…'}setTimeout(()=>{window._busy=false},8000);
+const e={id:uid(),date:dt,type:S.f.type,cat:$('#cat').value,desc:($('#desc').value||$('#cat').value).slice(0,120),amt:v/RATES[S.cur].r,grp:$('#grp').value,pv:(($('#pvd')||{}).value||'').slice(0,80),photo:0};
+const fl=$('#ph').files[0];const fin=()=>{window._busy=false;S.e.push(e);save();R()};
+if(!fl){fin();return}
+const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=84;const x=c.getContext('2d');const s=Math.min(im.width,im.height);x.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,84,84);e.thumb=c.toDataURL('image/jpeg',.6);e.photo=1;fin()};im.onerror=fin;im.src=URL.createObjectURL(fl)}
+function RES_(){const a=S.e.filter(inP),i=sum(a,'ing'),c=sum(a,'gas')+prv(),r=i-c,mg=i?r/i*100:0;
+let h=per()+`<div class="kpis"><div class="k k1"><span>Ingresos</span><b>${money(i)}</b></div><div class="k k2"><span>Gastos</span><b>${money(c)}</b></div><
