@@ -1,3 +1,4 @@
+(function(){var ok=false;try{var o=window.R;if(typeof o==='function'){window.R=function(){var r=o.apply(this,arguments);try{var m=document.getElementById('m'),f={res:RES_,gru:gru,equ:equ,car:car}[S.tab];if(m&&f)m.innerHTML=f()}catch(e){console.error('Parche1',e)}return r};ok=true}}catch(e){}document.title='Pirapire Pro · P1'+(ok?'':'!')})();
 function _e(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function _dv(d){const t=new Date();t.setHours(0,0,0,0);const y=t.getFullYear(),m=t.getMonth();let n=new Date(y,m,Math.min(d,new Date(y,m+1,0).getDate()));if(n<t)n=new Date(y,m+1,Math.min(d,new Date(y,m+2,0).getDate()));return Math.round((n-t)/864e5)}
 function sf(k,v){S.fin[k]=+v;clearTimeout(window._st);window._st=setTimeout(save,800);$('#fo').innerHTML=finOut()}
